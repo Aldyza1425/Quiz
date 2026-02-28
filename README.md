@@ -61,6 +61,18 @@ Aplikasi akan berjalan di `http:localhost:5173`.
 
 ---
 
+## Kredensial Login (Default)
+
+Gunakan akun berikut untuk mencoba aplikasi setelah melakukan _seeding_ data:
+
+| Role            | Email               | Password   |
+| --------------- | ------------------- | ---------- |
+| **Admin Utama** | `admin@sekolah.id`  | `password` |
+| **Guru 1**      | `guru1@sekolah.id`  | `password` |
+| **Siswa 1**     | `siswa1@sekolah.id` | `password` |
+
+---
+
 ## Fitur Utama
 
 ### Admin

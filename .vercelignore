@@ -1,0 +1,13 @@
+# Exclude local dependencies and dev assets to stay under 250MB limit
+Backend/vendor
+Backend/tests
+Backend/phpunit.xml
+Backend/.env
+Backend/.git
+Frontend/node_modules
+Frontend/dist
+node_modules
+.git
+.vercel
+public
+# We only need the source code; Vercel will install dependencies during build
