@@ -16,12 +16,12 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/Frontend/dist/$1",
+      "dest": "/public/$1",
       "check": true
     },
     {
       "src": "/(.*)",
-      "dest": "/Frontend/dist/index.html"
+      "dest": "/public/index.html"
     }
   ],
   "env": {
