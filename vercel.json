@@ -9,7 +9,10 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.php"
+      "dest": "api/index.php"
+    },
+    {
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
@@ -26,7 +29,6 @@
     "APP_DEBUG": "false",
     "LOG_CHANNEL": "stderr",
     "SESSION_DRIVER": "cookie",
-    "CACHE_STORE": "database",
     "DB_CONNECTION": "mysql"
   }
 }
