@@ -167,7 +167,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import axios from 'axios'
+import api from '@/configs/api'
 import { useNotificationStore } from '../../stores/notification'
 
 const router = useRouter()
@@ -208,7 +208,7 @@ const selectAnswer = (optionId) => {
 const saveAnswer = async (questionId, optionId, shortAnswer = null) => {
   try {
     const token = localStorage.getItem('access_token')
-    await axios.post(`http://localhost:8000/api/siswa/attempts/${attempt.value.id}/answer`, {
+    await api.post(`/siswa/attempts/${attempt.value.id}/answer`, {
       question_id: questionId,
       selected_option_id: optionId,
       short_answer: shortAnswer
@@ -260,9 +260,7 @@ const finishQuiz = async (isAuto = false) => {
 
   try {
     const token = localStorage.getItem('access_token')
-    await axios.post(`http://localhost:8000/api/siswa/attempts/${attempt.value.id}/finish`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    await api.post(`/siswa/attempts/${attempt.value.id}/finish`, {})
     cleanup()
     router.push('/siswa/attempts')
   } catch (err) {
@@ -296,7 +294,7 @@ const confirmExit = async () => {
 const getFullUrl = (url) => {
   if (!url) return ''
   if (url.startsWith('http')) return url
-  return `http://localhost:8000${url}`
+  return `${import.meta.env.VITE_BASE_URL || 'http://localhost:8000'}${url}`
 }
 
 const getYouTubeId = (url) => {
@@ -319,9 +317,7 @@ onMounted(async () => {
   notification.clearAll()
   try {
     const token = localStorage.getItem('access_token')
-    const response = await axios.post(`http://localhost:8000/api/siswa/quizzes/${route.params.id}/attempt`, {}, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const response = await api.post(`/siswa/quizzes/${route.params.id}/attempt`, {})
     attempt.value = response.data.attempt
     
     // Timer Persistence Logic

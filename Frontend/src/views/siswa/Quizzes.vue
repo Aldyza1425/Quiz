@@ -62,7 +62,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import api from '@/configs/api'
 
 const router = useRouter()
 const quizzes = ref([])
@@ -96,8 +96,8 @@ onMounted(async () => {
   try {
     const token = localStorage.getItem('access_token')
     const [qRes, sRes] = await Promise.all([
-      axios.get('http://localhost:8000/api/siswa/quizzes', { headers: { Authorization: `Bearer ${token}` } }),
-      axios.get('http://localhost:8000/api/siswa/quizzes/subjects', { headers: { Authorization: `Bearer ${token}` } })
+      api.get('/siswa/quizzes'),
+      api.get('/siswa/quizzes/subjects')
     ])
     quizzes.value = qRes.data
     subjects.value = sRes.data

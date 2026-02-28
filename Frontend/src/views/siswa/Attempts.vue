@@ -91,7 +91,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import api from '@/configs/api'
 
 const router = useRouter()
 
@@ -129,7 +129,7 @@ const confirmDeleteSelected = () => {
 const deleteSelected = async () => {
   try {
     const token = localStorage.getItem('access_token')
-    await axios.post('http://localhost:8000/api/siswa/attempts/bulk-delete', {
+    await api.post('/siswa/attempts/bulk-delete', {
       ids: selectedIds.value
     }, {
       headers: { Authorization: `Bearer ${token}` }
@@ -170,9 +170,7 @@ const fetchAttempts = async () => {
   loading.value = true
   try {
     const token = localStorage.getItem('access_token')
-    const response = await axios.get('http://localhost:8000/api/siswa/attempts', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const response = await api.get('/siswa/attempts')
     attempts.value = response.data
   } catch (err) {
     console.error('Fetch failed', err)

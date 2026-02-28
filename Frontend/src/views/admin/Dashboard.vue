@@ -140,7 +140,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/configs/api'
 
 const metrics = ref([
   { label: 'Total Guru', value: '0', icon: 'school', bg: 'bg-primary/10', color: 'text-primary' },
@@ -161,9 +161,7 @@ const topQuizzes = ref([])
 onMounted(async () => {
   try {
     const token = localStorage.getItem('access_token')
-    const response = await axios.get('http://localhost:8000/api/admin/dashboard', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const response = await api.get('/admin/dashboard')
     
     const stats = response.data.stats
     metrics.value[0].value = stats.total_guru || 0

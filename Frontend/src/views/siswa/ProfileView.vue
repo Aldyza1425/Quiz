@@ -117,7 +117,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/configs/api'
 import { useNotificationStore } from '../../stores/notification'
 
 const notification = useNotificationStore()
@@ -137,9 +137,7 @@ const form = ref({
 const fetchProfile = async () => {
   try {
     const token = localStorage.getItem('access_token')
-    const res = await axios.get('http://localhost:8000/api/siswa/profile', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.get('/siswa/profile')
     user.value = res.data
     form.value.name = res.data.name
     form.value.email = res.data.email
@@ -166,9 +164,8 @@ const handleAvatarChange = async (e) => {
 
   try {
     const token = localStorage.getItem('access_token')
-    const res = await axios.post('http://localhost:8000/api/siswa/profile/avatar', formData, {
+    const res = await api.post('/siswa/profile/avatar', formData, {
       headers: { 
-        'Authorization': `Bearer ${token}`,
         'Content-Type': 'multipart/form-data'
       }
     })
@@ -196,9 +193,7 @@ const updateProfile = async () => {
   loading.value = true
   try {
     const token = localStorage.getItem('access_token')
-    const res = await axios.put('http://localhost:8000/api/siswa/profile', form.value, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.put('/siswa/profile', form.value)
     
     user.value = res.data.user
     const storedUser = JSON.parse(localStorage.getItem('user'))
@@ -228,7 +223,7 @@ const updateProfile = async () => {
 const getFullUrl = (url) => {
   if (!url) return ''
   if (url.startsWith('http')) return url
-  return `http://localhost:8000${url}`
+  return `${import.meta.env.VITE_BASE_URL || 'http://localhost:8000'}${url}`
 }
 
 onMounted(fetchProfile)

@@ -950,7 +950,7 @@ const triggerUpload = () => fileInput.value?.click();
 const getFullUrl = (url) => {
   if (!url) return "";
   if (url.startsWith("http")) return url;
-  return `http://localhost:8000${url}`;
+  return `${import.meta.env.VITE_BASE_URL || 'http://localhost:8000'}${url}`;
 };
 
 const mediaAccept = computed(() => {
@@ -995,12 +995,11 @@ const handleFileUpload = async (e) => {
 
   try {
     const token = localStorage.getItem("access_token");
-    const res = await axios.post(
-      "http://localhost:8000/api/guru/media/upload",
+    const res = await api.post(
+      "/guru/media/upload",
       formData,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       },

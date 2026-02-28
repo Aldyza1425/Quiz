@@ -121,7 +121,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import api from '@/configs/api'
 import { useNotificationStore } from '../../stores/notification'
 
 const router = useRouter()
@@ -135,9 +135,7 @@ const fetchSchedules = async () => {
   loading.value = true
   try {
     const token = localStorage.getItem('access_token')
-    const res = await axios.get('http://localhost:8000/api/guru/teaching-schedules', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.get('/guru/teaching-schedules')
     schedules.value = res.data
   } catch (err) {
     console.error('Fetch schedules failed', err)
@@ -150,9 +148,7 @@ const deleteSchedule = async (id) => {
   if (!confirm('Hapus jadwal ini?')) return
   try {
     const token = localStorage.getItem('access_token')
-    await axios.delete(`http://localhost:8000/api/guru/teaching-schedules/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    await api.delete(`/guru/teaching-schedules/${id}`)
     notification.add({ title: 'Terhapus!', message: 'Jadwal telah dihapus.', type: 'success' })
     fetchSchedules()
   } catch (err) {

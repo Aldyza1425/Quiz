@@ -98,7 +98,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/configs/api'
 import { useNotificationStore } from '../../stores/notification'
 
 const notification = useNotificationStore()
@@ -114,9 +114,9 @@ const fetchData = async () => {
     const token = localStorage.getItem('access_token')
     const headers = { Authorization: `Bearer ${token}` }
     const [scRes, qzRes, clRes] = await Promise.all([
-      axios.get('http://localhost:8000/api/guru/schedules', { headers }),
-      axios.get('http://localhost:8000/api/guru/quizzes', { headers }),
-      axios.get('http://localhost:8000/api/guru/classrooms', { headers })
+      api.get('/guru/schedules'),
+      api.get('/guru/quizzes'),
+      api.get('/guru/classrooms')
     ])
     schedules.value = scRes.data
     quizzes.value = qzRes.data
@@ -130,9 +130,7 @@ const submitSchedule = async () => {
   submitting.value = true
   try {
     const token = localStorage.getItem('access_token')
-    await axios.post('http://localhost:8000/api/guru/schedules', form.value, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    await api.post('/guru/schedules', form.value)
     notification.add({ title: 'Berhasil!', message: 'Jadwal quiz telah diatur.', type: 'success' })
     isModalOpen.value = false
     fetchData()

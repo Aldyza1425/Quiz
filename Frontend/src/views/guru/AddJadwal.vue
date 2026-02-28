@@ -261,7 +261,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import axios from 'axios'
+import api from '@/configs/api'
 import { useNotificationStore } from '../../stores/notification'
 
 const router = useRouter()
@@ -331,8 +331,8 @@ const fetchFormData = async () => {
   try {
     const token = localStorage.getItem('access_token')
     const [subRes, clsRes] = await Promise.all([
-      axios.get('http://localhost:8000/api/guru/subjects', { headers: { Authorization: `Bearer ${token}` } }),
-      axios.get('http://localhost:8000/api/public/classrooms', { headers: { Authorization: `Bearer ${token}` } })
+      api.get('/guru/subjects'),
+      api.get('/public/classrooms')
     ])
     subjects.value = subRes.data
     classrooms.value = clsRes.data
@@ -345,9 +345,7 @@ const fetchScheduleData = async (id) => {
   loading.value = true
   try {
     const token = localStorage.getItem('access_token')
-    const res = await axios.get(`http://localhost:8000/api/guru/teaching-schedules/${id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const res = await api.get(`/guru/teaching-schedules/${id}`)
     const item = res.data
     form.value = {
       day_of_week: item.day_of_week,
@@ -372,14 +370,10 @@ const handleSubmit = async () => {
   try {
     const token = localStorage.getItem('access_token')
     if (isEditMode.value) {
-      await axios.put(`http://localhost:8000/api/guru/teaching-schedules/${route.params.id}`, form.value, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      await api.put(`/guru/teaching-schedules/${route.params.id}`, form.value)
       notification.add({ title: 'Berhasil!', message: 'Jadwal diperbarui.', type: 'success' })
     } else {
-      await axios.post('http://localhost:8000/api/guru/teaching-schedules', form.value, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      await api.post('/guru/teaching-schedules', form.value)
       notification.add({ title: 'Berhasil!', message: 'Jadwal ditambahkan.', type: 'success' })
     }
     router.push('/guru/jadwal')

@@ -161,7 +161,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import api from '@/configs/api'
 import { useNotificationStore } from "../../stores/notification";
 
 const router = useRouter();
@@ -187,18 +187,15 @@ const createNewQuiz = async () => {
     // Get first category ID as default if available
     let defaultCatId = categories.value[0]?.id || 1;
 
-    const response = await axios.post(
-      "http://localhost:8000/api/guru/quizzes",
+    const response = await api.post(
+      "/guru/quizzes",
       {
         title: "Draft Quiz Baru",
         description: "Deskripsi quiz...",
         category_id: defaultCatId,
         classroom_id: null,
         duration_seconds: 1800,
-      },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
+      }
     );
 
     notification.add({
@@ -223,11 +220,8 @@ const createNewQuiz = async () => {
 const fetchClassrooms = async () => {
   try {
     const token = localStorage.getItem("access_token");
-    const response = await axios.get(
-      "http://localhost:8000/api/public/classrooms",
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
+    const response = await api.get(
+      "/public/classrooms"
     );
     classrooms.value = response.data;
   } catch (err) {
@@ -238,11 +232,8 @@ const fetchClassrooms = async () => {
 const fetchSubjects = async () => {
   try {
     const token = localStorage.getItem("access_token");
-    const response = await axios.get(
-      "http://localhost:8000/api/guru/subjects",
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+    const response = await api.get(
+      "/guru/subjects"
     );
     console.log("Subjects fetched:", response.data);
     subjects.value = response.data;
@@ -255,9 +246,7 @@ const fetchQuizzes = async () => {
   loading.value = true;
   try {
     const token = localStorage.getItem("access_token");
-    const response = await axios.get("http://localhost:8000/api/guru/quizzes", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await api.get("/guru/quizzes");
     quizzes.value = response.data;
   } catch (err) {
     console.error("Gagal mengambil data quiz", err);
@@ -275,9 +264,7 @@ const confirmDelete = (id) => {
 const deleteQuiz = async (id) => {
   try {
     const token = localStorage.getItem("access_token");
-    await axios.delete(`http://localhost:8000/api/guru/quizzes/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await api.delete(`/guru/quizzes/${id}`);
 
     notification.add({
       title: "Berhasil",

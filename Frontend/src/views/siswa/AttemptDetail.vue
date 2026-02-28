@@ -148,7 +148,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import axios from 'axios'
+import api from '@/configs/api'
 
 const router = useRouter()
 const route = useRoute()
@@ -215,9 +215,7 @@ const getOptionIconClass = (questionId, opt) => {
 onMounted(async () => {
   try {
     const token = localStorage.getItem('access_token')
-    const response = await axios.get(`http://localhost:8000/api/siswa/attempts/${route.params.id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const response = await api.get(`/siswa/attempts/${route.params.id}`)
     attempt.value = response.data
   } catch (err) {
     console.error('Fetch attempt details failed', err)

@@ -79,7 +79,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/configs/api'
 
 const logs = ref([])
 const loading = ref(false)
@@ -124,9 +124,7 @@ const fetchLogs = async () => {
   loading.value = true
   try {
     const token = localStorage.getItem('access_token')
-    const response = await axios.get('http://localhost:8000/api/guru/activity-logs', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const response = await api.get('/guru/activity-logs')
     logs.value = response.data
   } catch (err) {
     console.error('Gagal mengambil log aktivitas', err)

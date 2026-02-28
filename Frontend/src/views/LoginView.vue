@@ -124,7 +124,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import api from '@/configs/api'
 
 const router = useRouter()
 const showPassword = ref(false)
@@ -140,7 +140,7 @@ const handleLogin = async () => {
   loading.value = true
   error.value = ''
   try {
-    const response = await axios.post('http://localhost:8000/api/login', form)
+    const response = await api.post('/login', form)
     localStorage.setItem('access_token', response.data.access_token)
     localStorage.setItem('user', JSON.stringify(response.data.user))
     

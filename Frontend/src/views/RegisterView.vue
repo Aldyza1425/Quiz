@@ -150,7 +150,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import api from '@/configs/api'
 
 const router = useRouter()
 const step = ref(1)
@@ -187,7 +187,7 @@ const filteredClassrooms = computed(() => {
 
 onMounted(async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/public/classrooms')
+    const response = await api.get('/public/classrooms')
     classrooms.value = response.data
   } catch (err) {
     console.error('Failed to fetch classrooms')
@@ -209,7 +209,7 @@ const handleRegister = async () => {
   loading.value = true
   error.value = ''
   try {
-    const response = await axios.post('http://localhost:8000/api/register', {
+    const response = await api.post('/register', {
       name: form.name,
       email: form.email,
       password: form.password,
