@@ -1,7 +1,0 @@
-{
-  "name": "quiz-monorepo",
-  "private": true,
-  "scripts": {
-    "build": "cd Frontend && npm install && npm run build && cd .. && mkdir -p public && cp -r Frontend/dist/* public/"
-  }
-}
